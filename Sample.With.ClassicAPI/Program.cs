@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Mvc.Authorization;
 using Sample.With.ClassicAPI.CustomAuthAttribute;
 
 var builder = WebApplication.CreateBuilder(args);

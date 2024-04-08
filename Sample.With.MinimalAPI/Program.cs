@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
-using Sample.With.MinimalAPI.CustomAuth;
+using Sample.With.MinimalAPI.CustomAuthFilter;
 using Sample.With.MinimalAPI.EndPointFilter;
 
 var builder = WebApplication.CreateBuilder(args);

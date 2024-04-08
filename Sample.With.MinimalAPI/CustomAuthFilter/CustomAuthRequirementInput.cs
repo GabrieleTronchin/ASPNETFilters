@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 
-namespace Sample.With.MinimalAPI.CustomAuth;
+namespace Sample.With.MinimalAPI.CustomAuthFilter;
 
 public class CustomAuthRequirementInput : IAuthorizationRequirement
 {
