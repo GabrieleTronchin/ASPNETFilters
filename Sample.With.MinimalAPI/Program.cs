@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Sample.With.MinimalAPI.CustomAuth;
+using Sample.With.MinimalAPI.EndPointFilter;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -55,6 +56,7 @@ app.MapGet("/weatherforecast", () =>
 })
 .WithName("GetWeatherForecast")
 .RequireAuthorization("Test")
+.AddEndpointFilter<EndpointFilter>()
 .WithOpenApi();
 
 app.Run();
