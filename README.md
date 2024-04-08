@@ -1,6 +1,6 @@
 # ASP.NET Filter
 
-This document illustrates the implementation various types of filter in C#.NET, showcasing two ASP.NET API approaches:
+This project illustrates the implementation various types of filter in C#.NET, showcasing two ASP.NET API approaches:
 - ASP.NET MVC
 - Minimal API.
 
