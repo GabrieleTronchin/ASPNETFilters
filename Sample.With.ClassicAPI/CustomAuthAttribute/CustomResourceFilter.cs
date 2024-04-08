@@ -5,7 +5,6 @@ namespace Sample.With.ClassicAPI.CustomAuthAttribute;
 public class CustomResourceFilter : Attribute, IResourceFilter
 {
 
-
     public void OnResourceExecuted(ResourceExecutedContext context)
     {
         using var loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());

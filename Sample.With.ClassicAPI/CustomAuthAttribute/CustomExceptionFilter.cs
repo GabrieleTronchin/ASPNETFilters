@@ -4,8 +4,6 @@ namespace Sample.With.ClassicAPI.CustomAuthAttribute;
 
 public class CustomExceptionFilter : Attribute, IExceptionFilter
 {
-
-
     public void OnException(ExceptionContext context)
     {
         using var loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());

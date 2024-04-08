@@ -4,7 +4,6 @@ namespace Sample.With.ClassicAPI.CustomAuthAttribute;
 
 public class CustomResultFilter : Attribute, IResultFilter
 {
-
     public void OnResultExecuting(ResultExecutingContext context)
     {
         using var loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
