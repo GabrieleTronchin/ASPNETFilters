@@ -42,10 +42,11 @@ var summaries = new[]
     "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
 };
 
-app.MapGroup(string.Empty)
+var global = app
+    .MapGroup(string.Empty)
     .AddEndpointFilter<GlobalEndpointFilter>();
 
-app.MapGet("/weatherforecast", () =>
+global.MapGet("/weatherforecast", () =>
 {
     var forecast = Enumerable.Range(1, 5).Select(index =>
         new WeatherForecast
