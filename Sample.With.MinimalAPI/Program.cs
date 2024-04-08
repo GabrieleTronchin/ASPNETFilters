@@ -18,10 +18,10 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddAuthorization(o =>
 {
-    o.AddPolicy("Test", p => p.AddRequirements(new MyCustomAuthRequirementInput("Test")));
+    o.AddPolicy("Test", p => p.AddRequirements(new CustomAuthRequirementInput("Test")));
 });
 
-builder.Services.AddSingleton<IAuthorizationHandler, MyCustomAuthorizationHandler>();
+builder.Services.AddSingleton<IAuthorizationHandler, CustomAuthorizationHandler>();
 
 
 var app = builder.Build();
