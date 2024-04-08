@@ -27,6 +27,10 @@ Here a list of all the filter type, ordered by execution order:
 
 ## Authorization
 
+Authorization Filters in .NET serve to verify whether a user is authorized to access a specific controller. 
+They are the initial filter triggered in the pipeline and are commonly employed when implementing token-based authorization flows.
+
+
 Below is the creation of a custom auth attribute:
 
 ```csharp
@@ -49,6 +53,9 @@ Once defined, you can apply it atop your controllers:
 ```
 
 ## Resource
+
+Resource filters execute their logic immediately after the execution of an authentication filter and encapsulate the majority of other filters. As they operate just before the model binding step, a useful application of these filters is to influence model binding.
+
 
 Below is the creation of a custom auth attribute:
 
@@ -78,6 +85,9 @@ Once defined, you can apply it atop your controllers:
 ```
 
 ## Action
+
+Action Filters Action filters are used to perform some specific tasks before or after the action method is executed. These filters can be added to different scope levels: Global, Action, Controller.
+
 Below is the creation of a custom auth attribute:
 
 ```csharp
@@ -110,6 +120,9 @@ Once defined, you can apply it atop your controllers:
 ```
 
 ## Exception
+
+Exception filters are employed to manage exceptions arising during request processing. They can be assigned to a controller or an action method through an attribute.
+
 Below is the creation of a custom auth attribute:
 
 ```csharp
@@ -131,6 +144,9 @@ Once defined, you can apply it atop your controllers:
 ```
 
 ## Result
+
+Result Filters are a specialized type of filter that operates after the action method has been executed, but prior to processing and transmitting the result to the client. Essentially, they function both before and after executing action results.
+
 Below is the creation of a custom auth attribute:
 
 ```csharp
@@ -162,14 +178,19 @@ Once defined, you can apply it atop your controllers:
 
 
 
-## Minimal API
+# Minimal API
+
+## Authorization
+
+Authorization Filters in .NET serve to verify whether a user is authorized to access a specific controller. 
+They are the initial filter triggered in the pipeline and are commonly employed when implementing token-based authorization flows.
 
 To craft a custom auth attribute with Minimal API, certain prerequisites must be established:
 
 ```csharp
-public class MyCustomAuthRequirementInput : IAuthorizationRequirement
+public class CustomAuthRequirementInput : IAuthorizationRequirement
 {
-    public MyCustomAuthRequirementInput(string condition) => Condition = condition;
+    public CustomAuthRequirementInput(string condition) => Condition = condition;
     public string Condition { get; set; }
 }
 ```
@@ -177,21 +198,17 @@ public class MyCustomAuthRequirementInput : IAuthorizationRequirement
 Subsequently, a custom AuthorizationHandler needs implementation with the aforementioned input:
 
 ```csharp
-public class MyCustomAuthorizationHandler(ICustomAuthService customAuthService) : AuthorizationHandler<MyCustomAuthRequirementInput>
+public class CustomAuthorizationHandler(ICustomAuthService customAuthService) : AuthorizationHandler<CustomAuthRequirementInput>
 {
 
-    protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, MyCustomAuthRequirementInput requirement)
+    protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, CustomAuthRequirementInput requirement)
     {
+        using var loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
+        var logger = loggerFactory.CreateLogger<CustomAuthorizationHandler>();
 
-        if (await customAuthService.CheckIfAllowed(requirement.Condition))
-        {
-            context.Succeed(requirement);
-        }
-        else
-        {
-            context.Fail();
-        }
+        logger.LogInformation($"{nameof(CustomAuthorizationHandler)} Invoked");
 
+        context.Succeed(requirement);
     }
 
 }
@@ -201,7 +218,7 @@ Finally, adjust your program.cs as follows:
 ```csharp
 builder.Services.AddAuthorization(o =>
 {
-    o.AddPolicy("Test", p => p.AddRequirements(new MyCustomAuthRequirementInput("Test")));
+    o.AddPolicy("Test", p => p.AddRequirements(new CustomAuthRequirementInput("Test")));
 });
 
 // .......
@@ -221,4 +238,60 @@ app.MapGet("/weatherforecast", () =>
 .WithName("GetWeatherForecast")
 .RequireAuthorization("Test")
 .WithOpenApi();
+```
+
+## Endpoint
+
+Endpoint filters run at the same level as action filters and are exclusively available with the minimal API. They encapsulate a group of endpoints. From a classic ASP.NET MVC perspective, they function similarly to a filter that acts as a controller filter.
+
+
+Below is the creation of a custom auth attribute:
+
 ```csharp
+public class EndpointFilter : IEndpointFilter
+{
+    public async ValueTask<object?> InvokeAsync(
+        EndpointFilterInvocationContext context,
+        EndpointFilterDelegate next
+    )
+    {
+        using var loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
+        var logger = loggerFactory.CreateLogger<EndpointFilter>();
+
+        logger.LogInformation($"{nameof(EndpointFilter)} Invoked");
+
+        return await next(context);
+    }
+}
+```
+
+Global Registration:
+
+
+```csharp
+var global = app
+    .MapGroup(string.Empty)
+    .AddEndpointFilter<EndpointFilter>();
+```
+
+Endpoint Registration:
+
+```csharp
+global.MapGet("/weatherforecast", () =>
+{
+    var forecast = Enumerable.Range(1, 5).Select(index =>
+        new WeatherForecast
+        (
+            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
+            Random.Shared.Next(-20, 55),
+            summaries[Random.Shared.Next(summaries.Length)]
+        ))
+        .ToArray();
+    return forecast;
+})
+.WithName("GetWeatherForecast")
+.AddEndpointFilter<EndpointFilter>()
+.WithOpenApi();
+```
+
+
