@@ -8,7 +8,7 @@ public class CustomActionFilter : Attribute, IActionFilter
     public void OnActionExecuting(ActionExecutingContext context)
     {
         using var loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
-        var logger = loggerFactory.CreateLogger<ActionExecutingContext>();
+        var logger = loggerFactory.CreateLogger<CustomActionFilter>();
 
         logger.LogInformation($"{nameof(OnActionExecuting)} Invoked");
     }
@@ -17,7 +17,7 @@ public class CustomActionFilter : Attribute, IActionFilter
     {
 
         using var loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
-        var logger = loggerFactory.CreateLogger<ActionExecutingContext>();
+        var logger = loggerFactory.CreateLogger<CustomActionFilter>();
 
         logger.LogInformation($"{nameof(OnActionExecuted)} Invoked");
     }

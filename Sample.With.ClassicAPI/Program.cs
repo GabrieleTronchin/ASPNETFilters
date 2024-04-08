@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Mvc.Authorization;
+using Sample.With.ClassicAPI.CustomAuthAttribute;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +18,10 @@ builder.Services.AddAuthentication(options =>
     options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
 });
 
+builder.Services.AddMvc(options =>
+{
+    options.Filters.Add(typeof(CustomActionGlobalFilter));
+});
 
 var app = builder.Build();
 
