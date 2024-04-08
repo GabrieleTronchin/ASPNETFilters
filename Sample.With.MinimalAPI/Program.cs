@@ -42,6 +42,9 @@ var summaries = new[]
     "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
 };
 
+app.MapGroup(string.Empty)
+    .AddEndpointFilter<GlobalEndpointFilter>();
+
 app.MapGet("/weatherforecast", () =>
 {
     var forecast = Enumerable.Range(1, 5).Select(index =>
@@ -58,6 +61,8 @@ app.MapGet("/weatherforecast", () =>
 .RequireAuthorization("Test")
 .AddEndpointFilter<EndpointFilter>()
 .WithOpenApi();
+
+
 
 app.Run();
 
