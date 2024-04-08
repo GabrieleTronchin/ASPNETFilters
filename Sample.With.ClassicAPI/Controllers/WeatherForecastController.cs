@@ -6,7 +6,7 @@ namespace Sample.With.ClassicAPI.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    [MyCustomAuthorizationFilter("Test")]
+    [CustomAuthorizationFilter]
     public class WeatherForecastController : ControllerBase
     {
         private static readonly string[] Summaries = new[]
@@ -21,7 +21,12 @@ namespace Sample.With.ClassicAPI.Controllers
             _logger = logger;
         }
 
-        [HttpGet(Name = "GetWeatherForecast")]
+        [HttpGet("GetWeatherForecast")]
+        [CustomActionFilter]
+        [CustomResultFilter]
+        [CustomAsyncActionFilter]
+        [CustomResourceFilter]
+        [CustomExceptionFilter]
         public IEnumerable<WeatherForecast> Get()
         {
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
@@ -31,6 +36,18 @@ namespace Sample.With.ClassicAPI.Controllers
                 Summary = Summaries[Random.Shared.Next(Summaries.Length)]
             })
             .ToArray();
+        }
+
+
+        [HttpGet("Execption")]
+        [CustomActionFilter]
+        [CustomResultFilter]
+        [CustomAsyncActionFilter]
+        [CustomResourceFilter]
+        [CustomExceptionFilter]
+        public IEnumerable<WeatherForecast> GetExcpetion()
+        {
+            throw new NotImplementedException();
         }
     }
 }

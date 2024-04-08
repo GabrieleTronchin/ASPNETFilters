@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
-using Sample.Filters.CustomAuthService;
 using Sample.With.MinimalAPI.CustomAuth;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,7 +15,7 @@ builder.Services.AddAuthentication(options =>
     options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
 });
 
-builder.Services.AddTransient<ICustomAuthService, CustomAuthService>();
+
 builder.Services.AddAuthorization(o =>
 {
     o.AddPolicy("Test", p => p.AddRequirements(new MyCustomAuthRequirementInput("Test")));
