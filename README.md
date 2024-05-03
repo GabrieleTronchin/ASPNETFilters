@@ -86,7 +86,7 @@ Once defined, you can apply it atop your controllers:
 
 ## Action
 
-Action Filters Action filters are used to perform some specific tasks before or after the action method is executed. These filters can be added to different scope levels: Global, Action, Controller.
+Action filters are used to perform some specific tasks before or after the action method is executed. These filters can be added to different scope levels: Global, Action, Controller.
 
 Below is the creation of a custom auth attribute:
 
