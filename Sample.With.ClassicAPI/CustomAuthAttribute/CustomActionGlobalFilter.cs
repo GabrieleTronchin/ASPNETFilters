@@ -2,10 +2,8 @@
 
 namespace Sample.With.ClassicAPI.CustomAuthAttribute
 {
-
     public class CustomActionGlobalFilter : Attribute, IActionFilter
     {
-
         public void OnActionExecuting(ActionExecutingContext context)
         {
             using var loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
@@ -16,7 +14,6 @@ namespace Sample.With.ClassicAPI.CustomAuthAttribute
 
         public void OnActionExecuted(ActionExecutedContext context)
         {
-
             using var loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
             var logger = loggerFactory.CreateLogger<CustomActionGlobalFilter>();
 
