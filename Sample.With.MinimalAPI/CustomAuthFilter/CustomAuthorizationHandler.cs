@@ -4,8 +4,10 @@ namespace Sample.With.MinimalAPI.CustomAuthFilter;
 
 public class CustomAuthorizationHandler : AuthorizationHandler<CustomAuthRequirementInput>
 {
-
-    protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, CustomAuthRequirementInput requirement)
+    protected override async Task HandleRequirementAsync(
+        AuthorizationHandlerContext context,
+        CustomAuthRequirementInput requirement
+    )
     {
         using var loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
         var logger = loggerFactory.CreateLogger<CustomAuthorizationHandler>();
@@ -14,5 +16,4 @@ public class CustomAuthorizationHandler : AuthorizationHandler<CustomAuthRequire
 
         context.Succeed(requirement);
     }
-
 }

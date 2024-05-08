@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.Filters;
 
-
 namespace Sample.With.ClassicAPI.CustomAuthAttribute;
 
 public class CustomAuthorizationFilter : Attribute, IAsyncAuthorizationFilter
